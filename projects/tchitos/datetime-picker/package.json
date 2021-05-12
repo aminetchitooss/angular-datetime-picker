@@ -1,0 +1,36 @@
+{
+  "name": "@tchitos/datetime-picker",
+  "version": "12.0.1",
+  "author": {
+    "name": "tchitos"
+  },
+  "keywords": [
+    "angular",
+    "angular datepicker",
+    "angular2",
+    "datetimepicker",
+    "datetime picker",
+    "datepicker time",
+    "date timer",
+    "ngx-mat-timepicker",
+    "timepicker"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aminetchitooss/angular-datetime-picker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aminetchitooss/angular-datetime-picker/issues"
+  },
+  "homepage": "https://github.com/aminetchitooss/angular-datetime-picker#readme",
+  "peerDependencies": {
+    "@angular/common": "^11.2.13",
+    "@angular/core": "^11.2.13"
+  },
+  "dependencies": {
+    "date-fns": "^2.19.0",
+    "ngx-slimscroll": "^11.0.0",
+    "tslib": "^2.0.0"
+  }
+}

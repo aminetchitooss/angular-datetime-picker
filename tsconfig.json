@@ -2,6 +2,12 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "@tchitos/datetime-picker": [
+        "dist/datetime-picker/@tchitos/datetime-picker",
+        "dist/datetime-picker"
+      ]
+    },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

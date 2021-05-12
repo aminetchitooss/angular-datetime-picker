@@ -1,0 +1,299 @@
+.datepicker-container {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+
+  * {
+    box-sizing: inherit;
+  }
+  input {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    text-transform: capitalize;
+  }
+  .is-hidden {
+    display: none !important;
+  }
+  .calendar-container {
+    position: absolute;
+    width: 320px;
+    border-radius: 4px;
+    top: 35px;
+    left: 0;
+    z-index: 10;
+
+    .top-container {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      width: 100%;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .month-year-container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+
+        .month-year-text {
+          font-size: 16px;
+          width: 100%;
+          font-weight: bold;
+          text-decoration: underline;
+          text-transform: capitalize;
+        }
+      }
+      .controls {
+        height: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        .control {
+          cursor: pointer;
+          margin-left: 20px;
+        }
+      }
+    }
+    .main-calendar-container {
+      width: 100%;
+      height: 100%;
+      font-size: 12px;
+      display: block;
+
+      .main-calendar-day-names {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        height: 35px;
+        padding: 0 10px;
+
+        .day-name-unit {
+          width: calc(100% / 7);
+          text-transform: uppercase;
+          text-align: center;
+        }
+      }
+      .main-calendar-days,
+      .main-calendar-years {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 10px;
+        width: 100%;
+        overflow: hidden;
+        text-align: left;
+        display: inline-block;
+
+        &.is-hidden {
+          display: none;
+        }
+
+        .day-unit,
+        .year-unit {
+          width: calc(100% / 7);
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          user-select: none;
+          font-size: 13px;
+          border-radius: 50%;
+
+          &:before {
+            content: "";
+            float: left;
+            padding-top: calc(100% - 5px);
+          }
+          &.is-disabled {
+            cursor: not-allowed;
+            &:hover {
+              background: transparent;
+            }
+          }
+        }
+        .day-unit {
+          width: 42px;
+          height: 42px;
+        }
+      }
+      .main-calendar-years {
+        display: block;
+        padding: 10px;
+        height: 275px;
+
+        .year-unit {
+          width: calc(100% / 4);
+          height: 35px;
+          border-radius: 20px;
+          margin: 8px 0;
+
+          &:before {
+            padding-top: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.datepicker-default {
+  .calendar-container {
+    background: #ffffff;
+    border: 1px solid #eaedf3;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    top: 35px;
+    left: 0;
+    font-weight: 600;
+  }
+
+  .month-year-text {
+    color: #010001;
+  }
+  .control path {
+    fill: #aaa8ab;
+  }
+  .control:hover path {
+    fill: #010001;
+  }
+  .main-calendar-day-names {
+    border-bottom: 1px solid #eaedf3;
+  }
+  .day-name-unit {
+    color: #aaa8ab;
+  }
+  .day-unit,
+  .year-unit {
+    color: #010001;
+
+    &is-prev-month {
+      color: #bbbabe;
+    }
+    &.is-today {
+      background: #edeef2;
+    }
+    &:hover,
+    &.is-selected {
+      background: #010001;
+      color: #ffffff;
+    }
+    &.is-disabled {
+      color: #aaa8ab;
+    }
+    &.is-disabled:hover {
+      background: transparent;
+    }
+  }
+}
+
+.main-calendar-time {
+  text-align: center;
+  padding: 0 1rem 1rem;
+  input {
+    padding: 5px 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    max-width: 105px;
+    border-radius: 9px;
+    border: 1px solid gray;
+    background-color: white;
+  }
+}
+
+.datepicker-input {
+  color: #393a3f;
+  font-size: 1rem;
+  height: 40px;
+  text-indent: 1rem;
+  border: 1px solid #e0e3e9;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 100%;
+  margin: 0 10px 0 0;
+  padding: 0 30px 0 0;
+  width: 100%;
+  border-radius: 4px;
+  width: 200px;
+}
+
+/**       Custom Calendar Classes       */
+
+$material: #3b3268;
+$material-light: #9586d6;
+
+.material {
+  .calendar-container {
+    background-color: $material;
+    border: 1px solid $material;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    top: 35px;
+    left: 0;
+    font-weight: 700;
+
+    .main-calendar-time input {
+      border: 1px solid transparent !important;
+      color: $material;
+    }
+  }
+  .month-year-text,
+  .control:hover path {
+    color: #ffffff;
+  }
+
+  .day-unit,
+  .year-unit {
+    color: #ffffff;
+    &.is-prev-month {
+      color: $material-light;
+    }
+    &.is-today {
+      background-color: $material-light;
+    }
+    &:hover,
+    &.is-selected,
+    &:hover,
+    &.is-selected {
+      background: #ffffff;
+      color: #686669;
+    }
+    &.is-disabled,
+    &.is-disabled {
+      color: #aaa8ab;
+    }
+    &.is-disabled:hover,
+    &.is-disabled:hover {
+      background: transparent;
+    }
+  }
+  .control path {
+    fill: #eff1f5;
+  }
+  .day-name-unit {
+    color: #fafafa;
+  }
+  .main-calendar-time {
+    input {
+      border: 1px solid transparent !important;
+      color: $material;
+    }
+  }
+}

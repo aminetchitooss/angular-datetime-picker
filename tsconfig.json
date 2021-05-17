@@ -5,7 +5,8 @@
     "paths": {
       "@tchitos/datetime-picker": [
         "dist/datetime-picker/@tchitos/datetime-picker",
-        "dist/datetime-picker"
+        "dist/datetime-picker",
+        "projects/datetime-picker/src/public-api.ts"
       ]
     },
     "baseUrl": "./",

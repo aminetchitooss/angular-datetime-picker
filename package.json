@@ -8,6 +8,7 @@
     "build:lib": "ng build @tchitos/datetimePicker --prod",
     "test": "ng test AngularDateTimePickerLibrary",
     "test:lib": "ng test @tchitos/datetimePicker",
+    "deploy": "npm run build && firebase deploy",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -31,6 +32,7 @@
     "@angular/compiler-cli": "~11.2.10",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
+    "angular-cli-ghpages": "^1.0.0-rc.1",
     "codelyzer": "^6.0.0",
     "date-fns": "^2.19.0",
     "jasmine-core": "~3.6.0",

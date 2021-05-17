@@ -123,10 +123,14 @@
               "devServerTarget": "AngularDateTimePickerLibrary:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
     },
-    "@tchitos/datetimePicker": { 
+    "@tchitos/datetimePicker": {
       "projectType": "library",
       "root": "projects/tchitos/datetime-picker",
       "sourceRoot": "projects/tchitos/datetime-picker/src",

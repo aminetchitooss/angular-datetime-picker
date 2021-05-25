@@ -62,8 +62,10 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
   @Input() options: DatePickerOptions = { ...defaultOptions };
   @Input() scrollOptions: SlimScrollOptions = new SlimScrollOptions(this.scrollBarOptions);
   @Input() isOpened: any = false;
-  @Input() LocalTimeZone: Observable<Locale> = new Observable<Locale>();
-  subsTimeZone: Subscription = new Subscription();
+  @Input() minDate: Date = null as any;
+  @Input() maxDate: Date = null as any;
+  @Input() optionUpdate: Observable<DatePickerOptions> = new Observable<DatePickerOptions>();
+  subsUpdateOption: Subscription = new Subscription();
 
   innerValue: Date = new Date();
   hour: string = [this.prefixNumber(this.innerValue.getHours()), this.prefixNumber(this.innerValue.getMinutes())].join(':')
@@ -114,10 +116,15 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
     this.view = 'days';
     this.date = new Date();
     this.init();
-    this.subsTimeZone = this.LocalTimeZone.subscribe((_: Locale) => {
-      this.options.locale = _
-      this.initDayNames()
-      this.updateDate()
+    this.subsUpdateOption = this.optionUpdate.subscribe((_: DatePickerOptions) => {
+      if (Object.keys(_).length > 0) {
+        this.options = mergeDatePickerOptions(_);
+        this.initDayNames()
+        if (this.displayValue)
+          setTimeout(() => {
+            this.updateDate()
+          }, 10);
+      }
     })
   }
 
@@ -128,10 +135,6 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
 
       if (this.sub) {
         this.sub.unsubscribe();
-      }
-
-      if (this.subsTimeZone) {
-        this.subsTimeZone.unsubscribe();
       }
 
       if (this.options.enableKeyboard) {
@@ -173,13 +176,18 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
-    this.subsTimeZone.unsubscribe();
+    this.subsUpdateOption.unsubscribe();
   }
 
   updateDate(): void {
-    this.displayValue = format(this.innerValue, this.options.format as string, { locale: this.options.locale });
+    this.displayValue = format(this.innerValue, this.options.format as string, { locale: this.options.locale }) + this.getHour();
     this.onChangeCallback(this.innerValue);
   }
+
+  getHour() {
+    return this.options.enableHour ? `, ${this.hour}` : ""
+  }
+
   updateHour(): void {
     this.innerValue.setHours(Number(this.hour.split(':')[0]), Number(this.hour.split(':')[1]))
     this.updateDate()
@@ -314,11 +322,11 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
   }
 
   private isDateSelectable(date: Date): boolean {
-    if (this.options.minDate && (isAfter(this.options.minDate, date) || isSameDay(this.options.minDate, date))) {
+    if (this.minDate && (isAfter(this.minDate, date) && !isSameDay(this.minDate, date))) {
       return false;
     }
 
-    if (this.options.maxDate && (isBefore(this.options.maxDate, date) || isSameDay(this.options.maxDate, date))) {
+    if (this.maxDate && (isBefore(this.maxDate, date) && !isSameDay(this.maxDate, date))) {
       return false;
     }
 
@@ -330,7 +338,7 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
       return;
     }
     this.innerValue = val;
-    this.displayValue = format(this.innerValue, this.options.format as string, { locale: this.options.locale });
+    this.displayValue = format(this.innerValue, this.options.format as string, { locale: this.options.locale }) + this.getHour();;
     this.init();
   }
 
@@ -350,8 +358,12 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
       return;
     }
 
-    const input = this.elementRef.nativeElement.querySelector('.datepicker-container > input');
+    const input = this.elementRef.nativeElement.querySelector('.field > input');
     if (!input || e.target === input || input.contains(e.target)) {
+      return;
+    }
+    const icon = this.elementRef.nativeElement.querySelector('.field > svg');
+    if (!icon || e.target === icon || icon.contains(e.target)) {
       return;
     }
 
@@ -362,7 +374,8 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
       !container.contains(e.target) &&
       !(e.target as HTMLElement).classList.contains('year-unit')
     ) {
-      this.isOpened = (e.target as HTMLElement).classList.contains('day-unit') && this.options.enableHour;
+      const classListClicked = (e.target as HTMLElement).classList
+      this.isOpened = (classListClicked.contains('day-unit') || container.contains(e.target)) && this.options.enableHour;
     }
   }
 }

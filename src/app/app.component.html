@@ -1,6 +1,6 @@
 <div class="toolbar" role="banner">
   <img src="assets/images/logo.png" alt="">
-  <h1>A simple date time picker demo</h1>
+  <h1>A reactive date time picker demo</h1>
 </div>
 
 <div class="content" role="main">
@@ -10,18 +10,19 @@
 
   <form class="card-container" [formGroup]="formGroup">
     <a class="card">
-      <ngx-datetimePicker formControlName="date1" [options]="options" [LocalTimeZone]="localTimeZone">
+      <ngx-datetimePicker formControlName="date1" [options]="options1" [optionUpdate]="optionUpdate1"
+        [minDate]="formGroup?.controls?.date2?.value">
       </ngx-datetimePicker>
     </a>
     <a class="card">
-      <ngx-datetimePicker formControlName="date2" [options]="options2" [LocalTimeZone]="localTimeZone">
+      <ngx-datetimePicker formControlName="date2" [options]="options2" [optionUpdate]="optionUpdate2" [minDate]="today">
       </ngx-datetimePicker>
     </a>
   </form>
 
-  <h2>Change the date picker language</h2>
+  <h2>Update options (format, language ...)</h2>
   <div class="action">
-    <button (click)="toFr()">Français</button>
-    <button (click)="toEn()">English</button>
+    <button (click)="toFrench()">Français</button>
+    <button (click)="toEnglish()">English</button>
   </div>
 </div>

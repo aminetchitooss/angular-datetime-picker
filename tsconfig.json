@@ -4,9 +4,8 @@
   "compilerOptions": {
     "paths": {
       "@tchitos/datetime-picker": [
-        "dist/datetime-picker/@tchitos/datetime-picker",
-        "dist/datetime-picker",
-        "projects/datetime-picker/src/public-api.ts"
+        // "dist/datetime-picker",// After running 'npm run build:lib'
+        "projects/tchitos/datetime-picker/src/public-api.ts"
       ]
     },
     "baseUrl": "./",

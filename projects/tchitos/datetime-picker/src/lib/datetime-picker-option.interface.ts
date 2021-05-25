@@ -1,10 +1,7 @@
 import { getYear, Locale } from 'date-fns';
-import { InjectionToken } from '@angular/core';
 import locale from 'date-fns/locale/fr';
 
 export interface DatePickerOptions {
-  minDate?: Date | null;
-  maxDate?: Date | null;
   minYear?: number;
   maxYear?: number;
   placeholder?: string;
@@ -26,8 +23,6 @@ export function mergeDatePickerOptions(opts: DatePickerOptions): DatePickerOptio
 }
 
 export const defaultOptions: DatePickerOptions = {
-  minDate: null,
-  maxDate: null,
   minYear: getYear(new Date()) - 20,
   maxYear: getYear(new Date()) + 20,
   placeholder: '',

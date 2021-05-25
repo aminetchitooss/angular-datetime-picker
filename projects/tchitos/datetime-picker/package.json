@@ -1,16 +1,20 @@
 {
   "name": "@tchitos/datetime-picker",
-  "version": "12.0.1",
+  "version": "13.0.0",
   "author": {
     "name": "tchitos"
   },
   "keywords": [
-    "angular",
     "angular datepicker",
+    "angular datetime picker",
+    "dynamic format",
+    "dynamic date format",
+    "translate",
     "angular2",
     "datetimepicker",
     "datetime picker",
     "datepicker time",
+    "date time picker",
     "date timer",
     "ngx-mat-timepicker",
     "timepicker"

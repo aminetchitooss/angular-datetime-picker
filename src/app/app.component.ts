@@ -12,34 +12,52 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class AppComponent {
 
   formGroup: FormGroup
-  localTimeZone: BehaviorSubject<Locale> = new BehaviorSubject<Locale>(localFR.default);
-
-  options: DatePickerOptions = {
-    format: 'dd/MM/yyyy',
+  today = new Date()
+  options1: DatePickerOptions = {
+    placeholder: "Start date",
     enableHour: true
   };
+  optionUpdate1: BehaviorSubject<DatePickerOptions> = new BehaviorSubject<DatePickerOptions>({});
 
   options2: DatePickerOptions = {
-    calendarClass: 'material',
-    scrollBarColor: '#ffffff',
-    format: 'LLLL do yyyy'
+    format: 'LLLL do yyyy',
+    placeholder: "End date"
   };
+  optionUpdate2: BehaviorSubject<DatePickerOptions> = new BehaviorSubject<DatePickerOptions>({});
 
   constructor(private fb: FormBuilder) {
     this.formGroup = this.fb.group({
-      date1: [new Date(), [Validators.required]],
+      date1: [null, [Validators.required]],
       date2: [new Date(), Validators.required]
     })
   }
 
-  toEn() {
-    this.options2.format = 'MM/dd/yyyy';
-    this.localTimeZone.next(localUS.default)
+  toFrench() {
+    this.options2 = {
+      ...this.options2,
+      locale: localFR.default
+    }
+    this.optionUpdate2.next(this.options2)
+    this.options1 = {
+      ...this.options1,
+      format: 'dd/MM/yyyy',
+      locale: localFR.default
+    }
+    this.optionUpdate1.next(this.options1)
   }
-  
-  toFr() {
-    this.options2.format = 'dd/MM/yyyy';
-    this.localTimeZone.next(localFR.default)
+
+  toEnglish() {
+    this.options2 = {
+      ...this.options2,
+      locale: localUS.default
+    }
+    this.optionUpdate2.next(this.options2)
+    this.options1 = {
+      ...this.options1,
+      format: 'MM/dd/yyyy',
+      locale: localUS.default
+    }
+    this.optionUpdate1.next(this.options1)
   }
 
 }

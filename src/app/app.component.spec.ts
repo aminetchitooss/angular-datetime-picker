@@ -28,6 +28,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     // fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.toolbar h1').textContent).toContain('A simple date time picker demo');
+    expect(compiled.querySelector('.toolbar h1').textContent).toContain('A reactive date time picker demo');
   });
 });

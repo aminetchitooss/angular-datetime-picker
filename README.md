@@ -4,10 +4,7 @@ Angular DateTimePickerLibrary
 [![npm](https://img.shields.io/npm/v/@tchitos/datetime-picker.svg?maxAge=2592000?style=flat-square)](https://www.npmjs.com/package/@tchitos/datetime-picker)
 [![npm](https://img.shields.io/npm/dm/@tchitos/datetime-picker.svg)](https://www.npmjs.com/package/@tchitos/datetime-picker)
 
-**Angular dateTime picker - Angular reusable UI component**
-**This package supports Angular 10+ / Angular 11**
-
-@tchitos/datetimePicker is simple Angular datepicker component with time picker
+Angular dateTime picker - This package supports Angular 10+ / Angular 11
 
 ## Installation
 
@@ -51,12 +48,26 @@ constructor(private fb: FormBuilder) {
 
 ## Options
 
+Then you apply custom options in your template as:
+
+```ts
+
+  today = new Date()
+
+```
+ 
+
+```html
+<form [formGroup]="formGroup">
+   <ngx-datetimePicker formControlName="date"  [minDate]="today">
+      </ngx-datetimePicker>
+</form>
+```
+
 All the properties for `DatePickerOptions` are optional
 -------
 |Name|Type|Default|Description|
 |:--- |:--- |:--- |:--- |
-|`minDate`|`Date`|`null`| minimum starting date. (not including the date) |
-|`maxDate`|`Date`|`null`| maximum end date. (not including the date) |
 |`minYear`|`number`|`getYear(new Date()) - 20`| minimum available and selectable year |
 |`maxYear`|`number`|`getYear(new Date()) + 20`| maximum available and selectable year |
 |`placeholder`|`string`|``| placeholder in case date model is null or undefined, example: 'Please pick a date' |
@@ -74,24 +85,54 @@ All the properties for `DatePickerOptions` are optional
 
 For available `format`, `formatTitle` and `formatDays` options check out [here](https://date-fns.org/docs/format).
 
-Then you apply custom options in your template as:
+### You can also update your options in your template as:
 
 ```ts
 import { DatePickerOptions } from '@tchitos/datetime-picker';
+import * as localFR from 'date-fns/locale/fr';
+import * as localUS from 'date-fns/locale/en-US';
+
+  optionUpdate: BehaviorSubject<DatePickerOptions> = new BehaviorSubject<DatePickerOptions>({});
 
 // options sample with default values
- options: DatePickerOptions = {
-    minDate: new Date(),
-    format: 'dd/MM/yyyy',
-    enableHour: true
-  };
+  options: DatePickerOptions = {
+      format: 'dd/MM/yyyy',
+      enableHour: true//enabling the time
+    };
+
+
+  changeToFrench() {
+    this.options = {
+      ...this.options,
+      format: 'dd/MM/yyyy',// french date format is day/month/year
+      locale: localFR.default // changing the datepicker's language to french
+    }
+    this.optionUpdate.next(this.options)
+  }
+
+  changeToEnglish() {
+    this.options = {
+      ...this.options,
+      format: 'MM/dd/yyyy', // USA date format is month/day/year
+      locale: localUS.default // changing the datepicker's language to english
+    }
+    this.optionUpdate.next(this.options)
+  }
+
 ```
  
 
 ```html
 <form [formGroup]="formGroup">
-    <ngx-datetimePicker formControlName="date" [options]="options" [LocalTimeZone]="localTimeZone">
+  
+    <ngx-datetimePicker formControlName="date" [options]="options" [optionUpdate]="optionUpdate">
         </ngx-datetimePicker>
+
+    <h2>Change the formatv and langugae of the date picker</h2>
+
+    <button (click)="changeToFrench()">French (France)</button>
+    <button (click)="changeToEnglish()">English (USA)</button>
+
 </form>
 ```
 

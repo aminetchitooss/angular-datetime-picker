@@ -154,13 +154,68 @@
   }
 }
 
+.labelClass {
+  display: block;
+  text-align: left;
+  z-index: -1;
+  position: absolute;
+  transform: translateY(-2rem);
+  transform-origin: 0%;
+  transition: transform 0.2s ease;
+  color: #8b8b8b;
+}
+.field {
+  position: relative;
+  border-bottom: 1px solid #979797;
+  &.selected {
+    .labelClass {
+      transform: scale(0.8) translateY(-65px);
+      font-size: 13px !important;
+      letter-spacing: 0;
+      line-height: 18px;
+    }
+  }
+  input {
+    width: 100%;
+    border: 0;
+    background: transparent;
+  }
+}
+.svg {
+  position: absolute;
+  right: 0px;
+  top: 10px;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  fill: #493c90;
+}
+
+.closeCalendar {
+  font-size: 23px;
+  cursor: pointer;
+  background-color: #66c6b4;
+  position: absolute;
+  right: 17px;
+  border: 0;
+  padding: 2px 12px;
+  color: white;
+  border: 1px solid transparent;
+  transition: all 0.3s ease-out;
+
+  &:hover,
+  &:focus {
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
+    border-color: gray;
+  }
+}
 .datepicker-default {
   .calendar-container {
     background: #ffffff;
     border: 1px solid #eaedf3;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     top: 35px;
-    left: 0;
+    left: -35px;
     font-weight: 600;
   }
 
@@ -204,6 +259,7 @@
 }
 
 .main-calendar-time {
+  position: relative;
   text-align: center;
   padding: 0 1rem 1rem;
   input {
@@ -221,7 +277,6 @@
   color: #393a3f;
   font-size: 1rem;
   height: 40px;
-  text-indent: 1rem;
   border: 1px solid #e0e3e9;
   outline: none;
   display: inline-flex;

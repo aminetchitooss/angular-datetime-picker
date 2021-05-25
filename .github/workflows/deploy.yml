@@ -31,13 +31,12 @@ jobs:
       - name: Build Lib
         run: npm run build:lib
 
-      - name: Get inside build folder
-        run: cd dist/datetime-picker/
-
-      - name: publish to npm
-        working-directory: ./dist/datetime-picker
-        run: npm publish --access=public --token=${{ secrets.NPM_TOKEN }}
-
+      - name: Get inside build folder & publish
+        run: | 
+          cd dist/datetime-picker/
+          ls
+          echo "yooooo"
+          npm publish --access=public --token=${{ secrets.NPM_TOKEN }}
           
       # - uses: JS-DevTools/npm-publish@v1
       #   with:

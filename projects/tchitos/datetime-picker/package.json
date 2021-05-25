@@ -20,6 +20,9 @@
     "timepicker"
   ],
   "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@tchitos/datetime-picker"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aminetchitooss/angular-datetime-picker.git"

@@ -35,6 +35,7 @@ jobs:
         run: cd dist/datetime-picker/
 
       - name: publish to npm
+        working-directory: ./dist/datetime-picker
         run: npm publish --access=public --token=${{ secrets.NPM_TOKEN }}
 
           

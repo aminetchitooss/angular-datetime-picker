@@ -21,7 +21,7 @@
   ],
   "license": "MIT",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/tchitooss/datetime-picker"
+    "registry": "https://registry.npmjs.org/tchitooss"
   },
   "repository": {
     "type": "git",

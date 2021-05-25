@@ -87,6 +87,8 @@
           width: calc(100% / 7);
           text-transform: uppercase;
           text-align: center;
+          font-weight: bold;
+          color: #444;
         }
       }
       .main-calendar-days,
@@ -154,15 +156,19 @@
   }
 }
 
+$primary: #493c90;
 .labelClass {
   display: block;
   text-align: left;
-  z-index: -1;
   position: absolute;
   transform: translateY(-2rem);
   transform-origin: 0%;
   transition: transform 0.2s ease;
   color: #8b8b8b;
+  font-size: 13px;
+  letter-spacing: 0;
+  line-height: 18px;
+  font-weight: 400;
 }
 .field {
   position: relative;
@@ -170,7 +176,6 @@
   &.selected {
     .labelClass {
       transform: scale(0.8) translateY(-65px);
-      font-size: 13px !important;
       letter-spacing: 0;
       line-height: 18px;
     }
@@ -180,6 +185,11 @@
     border: 0;
     background: transparent;
   }
+  &:focus-within {
+    .labelClass {
+      color: $primary;
+    }
+  }
 }
 .svg {
   position: absolute;
@@ -188,7 +198,7 @@
   width: 25px;
   height: 25px;
   cursor: pointer;
-  fill: #493c90;
+  fill: $primary;
 }
 
 .closeCalendar {
@@ -216,7 +226,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     top: 35px;
     left: -35px;
-    font-weight: 600;
+    font-weight: 400;
   }
 
   .month-year-text {

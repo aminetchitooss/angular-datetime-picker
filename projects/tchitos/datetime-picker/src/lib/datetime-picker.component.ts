@@ -86,9 +86,16 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
   set value(val: Date) {
     if (this.options.enableHour) {
       val.setHours(Number(this.hour.split(':')[0]), Number(this.hour.split(':')[1]))
-    }
+    } else
+      val?.setHours(12, 0)
     this.innerValue = val;
     this.updateDate()
+  }
+
+  clearValue() {
+    this.displayValue = ''
+    this.innerValue = new Date();
+    this.onChangeCallback(null);
   }
 
   constructor(public elementRef: ElementRef, private ref: ChangeDetectorRef, @Inject(DOCUMENT) document?: any) {
@@ -362,7 +369,7 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
     if (!input || e.target === input || input.contains(e.target)) {
       return;
     }
-    const icon = this.elementRef.nativeElement.querySelector('.field > svg');
+    const icon = this.elementRef.nativeElement.querySelector('.field > .svg');
     if (!icon || e.target === icon || icon.contains(e.target)) {
       return;
     }

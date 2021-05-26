@@ -161,7 +161,7 @@ $primary: #493c90;
   display: block;
   text-align: left;
   position: absolute;
-  transform: translateY(-2rem);
+  transform: translateY(-26px);
   transform-origin: 0%;
   transition: transform 0.2s ease;
   color: #8b8b8b;
@@ -171,16 +171,18 @@ $primary: #493c90;
   font-weight: 400;
 }
 .field {
+  padding-top: 3px;
   position: relative;
   border-bottom: 1px solid #979797;
   &.selected {
     .labelClass {
-      transform: scale(0.8) translateY(-65px);
+      transform: scale(0.8) translateY(-60px);
       letter-spacing: 0;
       line-height: 18px;
     }
   }
   input {
+    height: 37px;
     width: 100%;
     border: 0;
     background: transparent;
@@ -199,8 +201,42 @@ $primary: #493c90;
   height: 25px;
   cursor: pointer;
   fill: $primary;
-}
+  border-radius: 50%;
+  transition: all 0.3s ease-out;
 
+  &:hover,
+  &:focus {
+    background-color: rgba(137, 125, 201, 0.3);
+  }
+  &:focus,
+  &:active {
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
+  }
+}
+.clearValue {
+  $transformAnim1: translateY(10px) rotate(45deg);
+  $transformAnim2: translateY(6px) rotate(-45deg);
+  .line {
+    width: 20px;
+    height: 2px;
+    background-color: $primary;
+    display: block;
+    margin: 2px auto;
+
+    &:nth-child(1) {
+      -webkit-transform: $transformAnim1;
+      -ms-transform: $transformAnim1;
+      -o-transform: $transformAnim1;
+      transform: $transformAnim1;
+    }
+    &:nth-child(2) {
+      -webkit-transform: $transformAnim2;
+      -ms-transform: $transformAnim2;
+      -o-transform: $transformAnim2;
+      transform: $transformAnim2;
+    }
+  }
+}
 .closeCalendar {
   font-size: 23px;
   cursor: pointer;

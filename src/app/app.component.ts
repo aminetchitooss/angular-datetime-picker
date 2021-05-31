@@ -4,6 +4,7 @@ import * as localFR from 'date-fns/locale/fr';
 import * as localUS from 'date-fns/locale/en-US';
 import { DatePickerOptions } from '@tchitos/datetime-picker';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as pkg from '../../projects/tchitos/datetime-picker/package.json';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,6 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AppComponent {
 
+  version = pkg.version
   formGroup: FormGroup
   today = new Date()
   options1: DatePickerOptions = {

@@ -62,7 +62,14 @@
           }" (click)="day.isSelectable && setDate(i)">{{ day.day }}</span>
       </div>
       <div class="main-calendar-time" *ngIf="options.enableHour">
-        <input type="time" id="hour" (change)="updateHour()" name="hour" [(ngModel)]="hour">
+        <div class="timeInput">
+          <div class="arrowUp Hour" (click)="upHour()">&#60;</div>
+          <div class="arrowDown Hour" (click)="downHour()">&#60;</div>
+          <div class="arrowUp Minute" (click)="upMinute()">&#60;</div>
+          <div class="arrowDown Minute" (click)="downMinute()">&#60;</div>
+          <input type="time" id="hour" (change)="updateHour()" name="hour" [(ngModel)]="hour">
+
+        </div>
         <button class="closeCalendar" (click)="toggle();updateDate()">✓</button>
       </div>
     </div>

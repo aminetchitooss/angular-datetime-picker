@@ -68,7 +68,7 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
   subsUpdateOption: Subscription = new Subscription();
 
   innerValue: Date = new Date();
-  hour: string = [this.prefixNumber(this.innerValue.getHours()), this.prefixNumber(this.innerValue.getMinutes())].join(':')
+  hour: string = this.formatHour(this.innerValue.getHours(), this.innerValue.getMinutes())
   displayValue = '';
   view: 'days' | 'years' = 'days';
   date: Date = new Date();
@@ -191,17 +191,55 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
     this.onChangeCallback(this.innerValue);
   }
 
+  formatHour(pHour: number, pMinute: number): string {
+    return [this.prefixNumber(pHour), this.prefixNumber(pMinute)].join(':')
+  }
+
   getHour() {
     return this.options.enableHour ? `, ${this.hour}` : ""
   }
 
   updateHour(): void {
+    if (!this.hour)
+      this.hour = "00:00"
     this.innerValue.setHours(Number(this.hour.split(':')[0]), Number(this.hour.split(':')[1]))
     this.updateDate()
   }
 
   isTimerSelected(): boolean {
     return document.activeElement == document.getElementById('hour')
+  }
+
+  incrementHour(pHour: number, bypassAction = false): number {
+    return bypassAction ? pHour : (pHour == 23 ? 0 : pHour + 1)
+  }
+
+  decrementHour(pHour: number, bypassAction = false): number {
+    return bypassAction ? pHour : (pHour == 0 ? 23 : pHour - 1)
+  }
+
+  upHour() {
+    const currentHour = Number(this.hour.split(':')[0])
+    this.hour = this.formatHour(this.incrementHour(currentHour), Number(this.hour.split(':')[1]))
+    this.updateHour()
+  }
+
+  downHour() {
+    const currentHour = Number(this.hour.split(':')[0])
+    this.hour = this.formatHour(this.decrementHour(currentHour), Number(this.hour.split(':')[1]))
+    this.updateHour()
+  }
+
+  upMinute() {
+    const currentMinute = Number(this.hour.split(':')[1])
+    this.hour = this.formatHour(this.incrementHour(Number(this.hour.split(':')[0]), currentMinute !== 59), currentMinute == 59 ? 0 : currentMinute + 1)
+    this.updateHour()
+  }
+
+  downMinute() {
+    const currentMinute = Number(this.hour.split(':')[1])
+    this.hour = this.formatHour(this.decrementHour(Number(this.hour.split(':')[0]), currentMinute !== 0), currentMinute == 0 ? 59 : currentMinute - 1)
+    this.updateHour()
   }
 
   prefixNumber(pNumber: number): string {

@@ -186,6 +186,8 @@ $primary: #493c90;
     width: 100%;
     border: 0;
     background: transparent;
+    position: relative;
+    z-index: 2;
   }
   &:focus-within {
     .labelClass {
@@ -203,6 +205,7 @@ $primary: #493c90;
   fill: $primary;
   border-radius: 50%;
   transition: all 0.3s ease-out;
+  z-index: 4;
 
   &:hover,
   &:focus {

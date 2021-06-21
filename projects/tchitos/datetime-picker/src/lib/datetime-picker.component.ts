@@ -9,7 +9,8 @@ import {
   EventEmitter,
   OnDestroy,
   Inject,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ViewChild
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -56,7 +57,13 @@ interface Day {
   selector: 'ngx-datetimePicker',
   templateUrl: './datetime-picker.component.html',
   styleUrls: ['./datetime-picker.component.scss'],
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: DatetimePickerComponent, multi: true }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: DatetimePickerComponent,
+      multi: true
+    }
+  ]
 })
 export class DatetimePickerComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
   @Input() options: DatePickerOptions = { ...defaultOptions };
@@ -65,10 +72,14 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
   @Input() minDate: Date = null as any;
   @Input() maxDate: Date = null as any;
   @Input() optionUpdate: Observable<DatePickerOptions> = new Observable<DatePickerOptions>();
+
+  @ViewChild('datePicker', { static: true }) datePicker: ElementRef;
+
   subsUpdateOption: Subscription = new Subscription();
 
   innerValue: Date = new Date();
-  hour: string = this.formatHour(this.innerValue.getHours(), this.innerValue.getMinutes())
+  isDisabled: boolean = false;
+  hour: string = this.formatHour(this.innerValue.getHours(), this.innerValue.getMinutes());
   displayValue = '';
   view: 'days' | 'years' = 'days';
   date: Date = new Date();
@@ -85,15 +96,14 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
 
   set value(val: Date) {
     if (this.options.enableHour) {
-      val.setHours(Number(this.hour.split(':')[0]), Number(this.hour.split(':')[1]))
-    } else
-      val?.setHours(12, 0)
+      val.setHours(Number(this.hour.split(':')[0]), Number(this.hour.split(':')[1]));
+    } else val?.setHours(12, 0);
     this.innerValue = val;
-    this.updateDate()
+    this.updateDate();
   }
 
   clearValue() {
-    this.displayValue = ''
+    this.displayValue = '';
     this.innerValue = new Date();
     this.onChangeCallback(null);
   }
@@ -103,7 +113,9 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
   }
 
   get title(): string {
-    return format(this.date, this.options.formatTitle as string, { locale: this.options.locale });
+    return format(this.date, this.options.formatTitle as string, {
+      locale: this.options.locale
+    });
   }
 
   private get scrollBarOptions(): ISlimScrollOptions {
@@ -126,13 +138,13 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
     this.subsUpdateOption = this.optionUpdate.subscribe((_: DatePickerOptions) => {
       if (Object.keys(_).length > 0) {
         this.options = mergeDatePickerOptions(_);
-        this.initDayNames()
+        this.initDayNames();
         if (this.displayValue)
           setTimeout(() => {
-            this.updateDate()
+            this.updateDate();
           }, 10);
       }
-    })
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -147,7 +159,7 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
       if (this.options.enableKeyboard) {
         this.sub = fromEvent<KeyboardEvent>(this.doc || document, 'keyup')
           .pipe(filter(() => this.isOpened))
-          .subscribe(e => {
+          .subscribe((e) => {
             e.preventDefault();
             e.stopPropagation();
 
@@ -187,66 +199,69 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
   }
 
   updateDate(): void {
-    this.displayValue = format(this.innerValue, this.options.format as string, { locale: this.options.locale }) + this.getHour();
+    this.displayValue =
+      format(this.innerValue, this.options.format as string, {
+        locale: this.options.locale
+      }) + this.getHour();
     this.onChangeCallback(this.innerValue);
   }
 
   formatHour(pHour: number, pMinute: number): string {
-    return [this.prefixNumber(pHour), this.prefixNumber(pMinute)].join(':')
+    return [this.prefixNumber(pHour), this.prefixNumber(pMinute)].join(':');
   }
 
   getHour() {
-    return this.options.enableHour ? `, ${this.hour}` : ""
+    return this.options.enableHour ? `, ${this.hour}` : '';
   }
 
   updateHour(): void {
-    if (!this.hour)
-      this.hour = "00:00"
-    this.innerValue.setHours(Number(this.hour.split(':')[0]), Number(this.hour.split(':')[1]))
-    this.updateDate()
+    if (!this.hour) this.hour = '00:00';
+    this.innerValue.setHours(Number(this.hour.split(':')[0]), Number(this.hour.split(':')[1]));
+    this.updateDate();
   }
 
   isTimerSelected(): boolean {
-    return document.activeElement == document.getElementById('hour')
+    return document.activeElement == document.getElementById('hour');
   }
 
   incrementHour(pHour: number, bypassAction = false): number {
-    return bypassAction ? pHour : (pHour == 23 ? 0 : pHour + 1)
+    return bypassAction ? pHour : pHour == 23 ? 0 : pHour + 1;
   }
 
   decrementHour(pHour: number, bypassAction = false): number {
-    return bypassAction ? pHour : (pHour == 0 ? 23 : pHour - 1)
+    return bypassAction ? pHour : pHour == 0 ? 23 : pHour - 1;
   }
 
   upHour() {
-    const currentHour = Number(this.hour.split(':')[0])
-    this.hour = this.formatHour(this.incrementHour(currentHour), Number(this.hour.split(':')[1]))
-    this.updateHour()
+    const currentHour = Number(this.hour.split(':')[0]);
+    this.hour = this.formatHour(this.incrementHour(currentHour), Number(this.hour.split(':')[1]));
+    this.updateHour();
   }
 
   downHour() {
-    const currentHour = Number(this.hour.split(':')[0])
-    this.hour = this.formatHour(this.decrementHour(currentHour), Number(this.hour.split(':')[1]))
-    this.updateHour()
+    const currentHour = Number(this.hour.split(':')[0]);
+    this.hour = this.formatHour(this.decrementHour(currentHour), Number(this.hour.split(':')[1]));
+    this.updateHour();
   }
 
   upMinute() {
-    const currentMinute = Number(this.hour.split(':')[1])
-    this.hour = this.formatHour(this.incrementHour(Number(this.hour.split(':')[0]), currentMinute !== 59), currentMinute == 59 ? 0 : currentMinute + 1)
-    this.updateHour()
+    const currentMinute = Number(this.hour.split(':')[1]);
+    this.hour = this.formatHour(this.incrementHour(Number(this.hour.split(':')[0]), currentMinute !== 59), currentMinute == 59 ? 0 : currentMinute + 1);
+    this.updateHour();
   }
 
   downMinute() {
-    const currentMinute = Number(this.hour.split(':')[1])
-    this.hour = this.formatHour(this.decrementHour(Number(this.hour.split(':')[0]), currentMinute !== 0), currentMinute == 0 ? 59 : currentMinute - 1)
-    this.updateHour()
+    const currentMinute = Number(this.hour.split(':')[1]);
+    this.hour = this.formatHour(this.decrementHour(Number(this.hour.split(':')[0]), currentMinute !== 0), currentMinute == 0 ? 59 : currentMinute - 1);
+    this.updateHour();
   }
 
   prefixNumber(pNumber: number): string {
-    return pNumber.toString().length == 1 ? "0" + pNumber.toString() : pNumber.toString()
+    return pNumber.toString().length == 1 ? '0' + pNumber.toString() : pNumber.toString();
   }
 
   toggle(): void {
+    if (this.isDisabled) return;
     this.isOpened = !this.isOpened;
     if (this.isOpened) {
       this.view = 'days';
@@ -268,7 +283,6 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
       this.date = addMonths(this.date, 1);
       this.initDays();
     }
-
   }
 
   prevMonth(): void {
@@ -276,7 +290,6 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
       this.date = subMonths(this.date, 1);
       this.initDays();
     }
-
   }
 
   nextYear(): void {
@@ -284,7 +297,6 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
       this.date = addYears(this.date, 1);
       this.initDays();
     }
-
   }
 
   prevYear(): void {
@@ -338,7 +350,7 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
 
   private initYears(): void {
     const range = (this.options.maxYear as number) - (this.options.minYear as number) + 1;
-    this.years = Array.from(new Array(range), (_, i) => i + (this.options.minYear as number)).map(year => {
+    this.years = Array.from(new Array(range), (_, i) => i + (this.options.minYear as number)).map((year) => {
       return { year, isThisYear: year === getYear(this.date) };
     });
   }
@@ -348,7 +360,11 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
     const start = this.options.firstCalendarDay as number;
     for (let i = start; i <= 6 + start; i++) {
       const date = setDay(new Date(), i);
-      this.dayNames.push(format(date, this.options.formatDays as string, { locale: this.options.locale }));
+      this.dayNames.push(
+        format(date, this.options.formatDays as string, {
+          locale: this.options.locale
+        })
+      );
     }
   }
 
@@ -360,18 +376,17 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
       year: getYear(date),
       inThisMonth,
       isToday: isToday(date),
-      isSelected:
-        isSameDay(date, this.innerValue) && isSameMonth(date, this.innerValue) && isSameYear(date, this.innerValue),
+      isSelected: isSameDay(date, this.innerValue) && isSameMonth(date, this.innerValue) && isSameYear(date, this.innerValue),
       isSelectable: this.isDateSelectable(date)
     };
   }
 
   private isDateSelectable(date: Date): boolean {
-    if (this.minDate && (isAfter(this.minDate, date) && !isSameDay(this.minDate, date))) {
+    if (this.minDate && isAfter(this.minDate, date) && !isSameDay(this.minDate, date)) {
       return false;
     }
 
-    if (this.maxDate && (isBefore(this.maxDate, date) && !isSameDay(this.maxDate, date))) {
+    if (this.maxDate && isBefore(this.maxDate, date) && !isSameDay(this.maxDate, date)) {
       return false;
     }
 
@@ -383,7 +398,10 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
       return;
     }
     this.innerValue = val;
-    this.displayValue = format(this.innerValue, this.options.format as string, { locale: this.options.locale }) + this.getHour();;
+    this.displayValue =
+      format(this.innerValue, this.options.format as string, {
+        locale: this.options.locale
+      }) + this.getHour();
     this.init();
   }
 
@@ -395,8 +413,14 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
     this.onTouchedCallback = fn;
   }
 
-  private onTouchedCallback: () => void = () => { };
-  private onChangeCallback: (_: any) => void = () => { };
+  setDisabledState?(isDisabled: boolean): void {
+    this.isDisabled = isDisabled;
+    console.log('disable');
+    this.datePicker.nativeElement.classList[!isDisabled ? 'remove' : 'add']('disabled');
+  }
+
+  private onTouchedCallback: () => void = () => {};
+  private onChangeCallback: (_: any) => void = () => {};
 
   @HostListener('document:click', ['$event']) onBlur(e: MouseEvent): void {
     if (!this.isOpened) {
@@ -413,13 +437,8 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
     }
 
     const container = this.elementRef.nativeElement.querySelector('.datepicker-container > .calendar-container');
-    if (
-      container &&
-      container !== e.target &&
-      !container.contains(e.target) &&
-      !(e.target as HTMLElement).classList.contains('year-unit')
-    ) {
-      const classListClicked = (e.target as HTMLElement).classList
+    if (container && container !== e.target && !container.contains(e.target) && !(e.target as HTMLElement).classList.contains('year-unit')) {
+      const classListClicked = (e.target as HTMLElement).classList;
       this.isOpened = (classListClicked.contains('day-unit') || container.contains(e.target)) && this.options.enableHour;
     }
   }

@@ -154,6 +154,15 @@
       }
     }
   }
+  &.disabled {
+    pointer-events: none;
+    .datepicker-input {
+      color: gray !important;
+    }
+    .svg {
+      fill: gray !important;
+    }
+  }
 }
 
 $primary: #493c90;

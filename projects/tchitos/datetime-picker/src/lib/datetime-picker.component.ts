@@ -398,6 +398,7 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
       return;
     }
     this.innerValue = val;
+    this.hour = this.formatHour(this.innerValue.getHours(), this.innerValue.getMinutes());
     this.displayValue =
       format(this.innerValue, this.options.format as string, {
         locale: this.options.locale

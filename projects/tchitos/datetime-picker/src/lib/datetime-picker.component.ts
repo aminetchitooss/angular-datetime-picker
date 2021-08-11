@@ -54,9 +54,10 @@ interface Day {
   isSelectable: boolean;
 }
 
-enum PICKER_HEIGHT {
-  WithHour = 434,
-  WithoutHour = 367
+enum PICKER_DIMENSION {
+  HeightWithHour = 434,
+  HeightWithoutHour = 367,
+  Width = 320
 }
 
 @Component({
@@ -293,11 +294,19 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
     // these are relative to the viewport
     const top = viewportOffset.top;
     const bottom = window.innerHeight - top - 35;
-    const pickerHeight = this.options.enableHour ? PICKER_HEIGHT.WithHour : PICKER_HEIGHT.WithoutHour;
+    const pickerHeight = this.options.enableHour ? PICKER_DIMENSION.HeightWithHour : PICKER_DIMENSION.HeightWithoutHour;
     // console.log('height is ', pickerHeight);
-    // console.log('view port is ', top);
+    console.log('view port is here ', top);
     let isDown: boolean = bottom > top;
     setTimeout(() => {
+      if ((isDown && bottom <= pickerHeight) || (!isDown && top <= pickerHeight)) {
+        this.calendar.nativeElement.style.top = window.innerHeight / 2 - pickerHeight / 2 + 'px';
+        this.calendar.nativeElement.style.left = (window.innerWidth > 768 ? viewportOffset.left : window.innerWidth / 2 - PICKER_DIMENSION.Width / 2) + 'px';
+        this.calendar.nativeElement.style.position = 'fixed';
+        this.calendar.nativeElement.style.display = 'block';
+        return;
+      }
+
       this.calendar.nativeElement.style.top = isDown ? '35px' : -pickerHeight - 10 + 'px';
       this.calendar.nativeElement.style.display = 'block';
     }, 0);

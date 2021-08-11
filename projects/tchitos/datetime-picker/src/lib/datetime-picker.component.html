@@ -1,4 +1,4 @@
-<div class="datepicker-container" [class]="options.calendarClass" #datePicker>
+<div class="datepicker-container" [class]="options.calendarClass" #datePicker id="dd">
   <div class="field" [ngClass]="{'selected':isOpened || displayValue!==''}">
     <input type="text" [(ngModel)]="displayValue" [class]="options.inputClass" readonly (click)="toggle()"
       [disabled]="isDisabled" />
@@ -35,7 +35,7 @@
 
     <label for="text" class="labelClass"> {{options?.placeholder}} </label>
   </div>
-  <div class="calendar-container" *ngIf="isOpened">
+  <div class="calendar-container" #calendar *ngIf="isOpened">
     <div class="top-container">
       <div class="month-year-container">
         <span class="month-year-text" (click)="toggleView()">{{ title }}</span>

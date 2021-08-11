@@ -54,6 +54,11 @@ interface Day {
   isSelectable: boolean;
 }
 
+enum PICKER_HEIGHT {
+  WithHour = 434,
+  WithoutHour = 367
+}
+
 @Component({
   selector: 'ngx-datetimePicker',
   templateUrl: './datetime-picker.component.html',
@@ -74,8 +79,16 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
   @Input() maxDate: Date = null as any;
   @Input() optionUpdate: Observable<DatePickerOptions> = new Observable<DatePickerOptions>();
 
-  @ViewChild('datePicker', { static: true }) datePicker: ElementRef;
+  @ViewChild('datePicker', { static: true }) datePicker: ElementRef<HTMLDivElement>;
 
+  private calendar: ElementRef<HTMLDivElement>;
+
+  @ViewChild('calendar') set content(content: ElementRef<HTMLDivElement>) {
+    if (content) {
+      // initially setter gets called with undefined
+      this.calendar = content;
+    }
+  }
   subsUpdateOption: Subscription = new Subscription();
 
   innerValue: Date = new Date();
@@ -271,7 +284,23 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
       this.view = 'days';
       this.date = this.value;
       this.initDays();
+      this.calculatePositionToViewPort();
     }
+  }
+
+  private calculatePositionToViewPort() {
+    var viewportOffset = this.datePicker.nativeElement.getBoundingClientRect();
+    // these are relative to the viewport
+    const top = viewportOffset.top;
+    const bottom = window.innerHeight - top - 35;
+    const pickerHeight = this.options.enableHour ? PICKER_HEIGHT.WithHour : PICKER_HEIGHT.WithoutHour;
+    // console.log('height is ', pickerHeight);
+    // console.log('view port is ', top);
+    let isDown: boolean = bottom > top;
+    setTimeout(() => {
+      this.calendar.nativeElement.style.top = isDown ? '35px' : -pickerHeight - 10 + 'px';
+      this.calendar.nativeElement.style.display = 'block';
+    }, 0);
   }
 
   toggleView(): void {

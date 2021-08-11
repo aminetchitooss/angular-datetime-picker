@@ -11,6 +11,7 @@ import * as pkg from '../../projects/tchitos/datetime-picker/package.json';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  show = true;
   version = pkg.version;
   formGroup: FormGroup;
   today = new Date();

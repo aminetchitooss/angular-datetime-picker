@@ -10,7 +10,8 @@ import {
   OnDestroy,
   Inject,
   ChangeDetectorRef,
-  ViewChild
+  ViewChild,
+  NgZone
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -108,7 +109,7 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
     this.onChangeCallback(null);
   }
 
-  constructor(public elementRef: ElementRef, private ref: ChangeDetectorRef, @Inject(DOCUMENT) document?: any) {
+  constructor(private _zone: NgZone, public elementRef: ElementRef, private ref: ChangeDetectorRef, @Inject(DOCUMENT) document?: any) {
     this.doc = document as Document;
   }
 
@@ -132,6 +133,7 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
   }
 
   ngOnInit(): void {
+    this.detectDocumentClick();
     this.view = 'days';
     this.date = new Date();
     this.init();
@@ -196,6 +198,8 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
   ngOnDestroy(): void {
     this.sub.unsubscribe();
     this.subsUpdateOption.unsubscribe();
+    // console.log('cancelled');
+    this.toggleEventListrener(false);
   }
 
   updateDate(): void {
@@ -423,7 +427,8 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
   private onTouchedCallback: () => void = () => {};
   private onChangeCallback: (_: any) => void = () => {};
 
-  @HostListener('document:click', ['$event']) onBlur(e: MouseEvent): void {
+  handleDocumentClick(e: MouseEvent) {
+    // console.log('click', Math.random());
     if (!this.isOpened) {
       return;
     }
@@ -440,7 +445,29 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
     const container = this.elementRef.nativeElement.querySelector('.datepicker-container > .calendar-container');
     if (container && container !== e.target && !container.contains(e.target) && !(e.target as HTMLElement).classList.contains('year-unit')) {
       const classListClicked = (e.target as HTMLElement).classList;
-      this.isOpened = (classListClicked.contains('day-unit') || container.contains(e.target)) && this.options.enableHour;
+      const isOpen = (classListClicked.contains('day-unit') || container.contains(e.target)) && this.options.enableHour;
+      if (this.isOpened !== isOpen)
+        this._zone.run(() => {
+          this.isOpened = isOpen;
+          // this.ref.detectChanges();
+        });
     }
   }
+
+  handleBind;
+  private toggleEventListrener(add = true) {
+    if (add) document.addEventListener('click', this.handleBind, false);
+    else document.removeEventListener('click', this.handleBind, false);
+  }
+
+  private detectDocumentClick() {
+    this.handleBind = this.handleDocumentClick.bind(this);
+    this._zone.runOutsideAngular(() => {
+      this.toggleEventListrener();
+    });
+  }
+
+  // @HostListener('document:click', ['$event']) onBlur(e: MouseEvent): void {
+  //   this.handleDocmentClick(e);
+  // }
 }

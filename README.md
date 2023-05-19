@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/@tchitos/datetime-picker.svg?maxAge=2592000?style=flat-square)](https://www.npmjs.com/package/@tchitos/datetime-picker)
 [![npm](https://img.shields.io/npm/dm/@tchitos/datetime-picker.svg)](https://www.npmjs.com/package/@tchitos/datetime-picker)
 
-Angular dateTime picker - This package supports Angular 10+ / Angular 11
+Angular dateTime picker - This package supports Angular 16+
 Checkout the [Demo](https://aminetchitooss.github.io/angular-datetime-picker/)
 
 ## Installation

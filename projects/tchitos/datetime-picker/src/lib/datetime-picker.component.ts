@@ -80,9 +80,9 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
   @Input() maxDate: Date = null as any;
   @Input() optionUpdate: Observable<DatePickerOptions> = new Observable<DatePickerOptions>();
 
-  @ViewChild('datePicker', { static: true }) datePicker: ElementRef<HTMLDivElement>;
+  @ViewChild('datePicker', { static: true }) datePicker!: ElementRef<HTMLDivElement>;
 
-  private calendar: ElementRef<HTMLDivElement>;
+  private calendar!: ElementRef<HTMLDivElement>;
 
   @ViewChild('calendar') set content(content: ElementRef<HTMLDivElement>) {
     if (content) {
@@ -492,7 +492,7 @@ export class DatetimePickerComponent implements ControlValueAccessor, OnInit, On
     }
   }
 
-  handleBind;
+  handleBind!:(e: MouseEvent) => void;
   private toggleEventListrener(add = true) {
     if (add) document.addEventListener('click', this.handleBind, false);
     else document.removeEventListener('click', this.handleBind, false);

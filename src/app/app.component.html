@@ -11,7 +11,7 @@
   <form class="card-container" [formGroup]="formGroup">
     <a class="card" *ngIf='show'>
       <ngx-datetimePicker formControlName="date1" [options]="options1" [optionUpdate]="optionUpdate1"
-        [minDate]="formGroup?.controls?.date2?.value">
+        [minDate]="formGroup.controls['date2'].value">
       </ngx-datetimePicker>
     </a>
     <a class="card" *ngIf='show' style="position: relative;top:300px">

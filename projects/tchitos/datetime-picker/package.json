@@ -1,6 +1,6 @@
 {
   "name": "@tchitos/datetime-picker",
-  "version": "16.0.0",
+  "version": "16.1.0",
   "author": {
     "name": "tchitos"
   },
@@ -33,7 +33,9 @@
   "homepage": "https://github.com/aminetchitooss/angular-datetime-picker#readme",
   "peerDependencies": {
     "@angular/common": "^16.0.0",
-    "@angular/core": "^16.0.0"
+    "@angular/core": "^16.0.0",
+    "date-fns": "^2.30.0",
+    "ngx-slimscroll": "^12.2.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"

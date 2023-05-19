@@ -29,6 +29,14 @@ export class SomeModule {}
 And that's it, you can then use it in your component as:
 
 ```ts
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { DatePickerOptions } from '@tchitos/datetime-picker';
+
+
+options: DatePickerOptions = {
+  placeholder: 'Start date',
+  enableHour: true
+};
 
 formGroup: FormGroup;
 
@@ -41,7 +49,7 @@ constructor(private fb: FormBuilder) {
 
 ```html
 <form [formGroup]="formGroup">
-  <ngx-datetimePicker formControlName="date"> </ngx-datetimePicker>
+  <ngx-datetimePicker [options]="options" formControlName="date"> </ngx-datetimePicker>
 </form>
 ```
 
@@ -61,22 +69,22 @@ today = new Date();
 
 ## All the properties for `DatePickerOptions` are optional
 
-| Name               | Type      | Default                    | Description                                                                        |
-| :----------------- | :-------- | :------------------------- | :--------------------------------------------------------------------------------- |
-| `minYear`          | `number`  | `getYear(new Date()) - 20` | minimum available and selectable year                                              |
-| `maxYear`          | `number`  | `getYear(new Date()) + 20` | maximum available and selectable year                                              |
-| `placeholder`      | `string`  | ``                         | placeholder in case date model is null or undefined, example: 'Please pick a date' |
-| `format`           | `string`  | `dd/MM/yyyy`               | date format to display in input                                                    |
-| `formatTitle`      | `string`  | `LLLL yyyy`                | date format to change view                                                         |
-| `formatDays`       | `string`  | `EEEEE`                    |                                                                                    |
-| `firstCalendarDay` | `number`  | `0`                        | 0 - Sunday, 1 - Monday                                                             |
-| `locale`           | `Locale`  | `0`                        | date-fns locale                                                                    |
-| `locale`           | `string`  | `bottom`                   | date-fns locale                                                                    |
-| `locale`           | `string`  | `datepicker-input`         | custom input CSS class to be applied                                               |
-| `locale`           | `string`  | `datepicker-default`       | custom datepicker calendar CSS class to be applied                                 |
-| `locale`           | `string`  | `#dfe3e9`                  | in case you customize you theme, here you define scroll bar color                  |
-| `locale`           | `boolean` | `true`                     | enable keyboard events                                                             |
-| `locale`           | `boolean` | `false`                    | enable time picker                                                                 |
+| Name                 | Type      | Default                    | Description                                                                        |
+| :--------------------| :-------- | :------------------------- | :--------------------------------------------------------------------------------- |
+| `minYear`            | `number`  | `getYear(new Date()) - 20` | minimum available and selectable year                                              |
+| `maxYear`            | `number`  | `getYear(new Date()) + 20` | maximum available and selectable year                                              |
+| `placeholder`        | `string`  | ``                         | placeholder in case date model is null or undefined, example: 'Please pick a date' |
+| `format`             | `string`  | `dd/MM/yyyy`               | date format to display in input                                                    |
+| `formatTitle`        | `string`  | `LLLL yyyy`                | date format to change view                                                         |
+| `formatDays`         | `string`  | `EEEEE`                    |                                                                                    |
+| `firstCalendarDay`   | `number`  | `0`                        | 0 - Sunday, 1 - Monday                                                             |
+| `locale`             | `Locale`  | `0`                        | date-fns locale                                                                    |
+| `position`           | `string`  | `bottom`                   | date-fns locale                                                                    |
+| `inputClass`         | `string`  | `datepicker-input`         | custom input CSS class to be applied                                               |
+| `calendarClass`      | `string`  | `datepicker-default`       | custom datepicker calendar CSS class to be applied                                 |
+| `scrollBarColor`     | `string`  | `#dfe3e9`                  | in case you customize you theme, here you define scroll bar color                  |
+| `enableKeyboard`     | `boolean` | `true`                     | enable keyboard events                                                             |
+| `enableHour`         | `boolean` | `false`                    | enable time picker                                                                 |
 
 For available `format`, `formatTitle` and `formatDays` options check out [here](https://date-fns.org/docs/format).
 

@@ -3,12 +3,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "date-fns": [
-        "./node_modules/date-fns"
-      ],
-      "ngx-slimscroll": [
-        "./node_modules/ngx-slimscroll"
-      ],
       "@tchitos/datetime-picker": [
         // "dist/datetime-picker",// After running 'npm run build:lib'
         "projects/tchitos/datetime-picker/src/public-api.ts"

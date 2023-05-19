@@ -22,13 +22,17 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      # Setup .npmrc file to publish to npm
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build Lib
+      - name: Build Libray
         run: npm run build:lib
 
       - name: Get inside build folder & publish
@@ -36,9 +40,8 @@ jobs:
           cd dist/datetime-picker/
           ls
           echo "yooooo"
-          npm publish --access=public --token=${{ secrets.NPM_TOKEN }}
-          
-      # - uses: JS-DevTools/npm-publish@v1
-      #   with:
-      #     token: ${{ secrets.NPM_TOKEN }}
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+ 
 
